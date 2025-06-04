@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Berqurban Bersama UNP Peduli</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-image: url('logounp.png');
+      background-repeat: no-repeat;
+      background-position:top ;
+      background-size: 800px 800px; /* ukuran kecil */
+      background-attachment: fixed;
+      background-color: #f9f9f9;
+      color: #2c3e50;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    nav {
+      background-color: rgba(44, 62, 80, 0.9);
+      padding: 10px 0;
+      text-align: center;
+      margin-bottom: 20px;
+      border-radius: 6px;
+    }
+    nav button {
+      background-color: #3498db;
+      color: rgb(231, 225, 225);
+      border: none;
+      margin: 0 10px;
+      padding: 10px 18px;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+    nav button:hover {
+      background-color: #2980b9;
+    }
+
+    section {
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      padding: 20px;
+      max-width: 700px;
+      margin: 0 auto 40px auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+      color: #34495e;
+    }
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    select {
+      width: 100%;
+      padding: 8px 10px;
+      margin-top: 5px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    button.submit-btn {
+      margin-top: 15px;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button.submit-btn:hover {
+      background-color: #1e8449;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    section {
+      display: none;
+    }
+    section.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Berqurban Bersama UNP Peduli</h1>
+
+<nav>
+  <button onclick="showSection('home')">Beranda</button>
+  <button onclick="showSection('pendaftaran')">Daftar Peserta Qurban</button>
+  <button onclick="showSection('inputPotongan')">Input Potongan Gaji</button>
+  <button onclick="showSection('laporan')">Laporan Potongan</button>
+</nav>
+
+<section id="home" class="active">
+  <h2>Selamat Datang di Website Berqurban Bersama UNP Peduli</h2>
+  <p>Website ini digunakan untuk pendaftaran peserta qurban dosen dan karyawan UNP, penginputan potongan gaji setiap bulan oleh bagian penggajian, dan laporan total potongan qurban.</p>
+  <p>Pilih menu di atas untuk memulai.</p>
+</section>
+
+<section id="pendaftaran">
+  <h2>Pendaftaran Peserta Qurban</h2>
+  <form id="formPendaftaran" onsubmit="return daftarPeserta()">
+    <label for="nama">Nama Lengkap:</label>
+    <input type="text" id="nama" name="nama" required />
+
+    <label for="nip">NIP / NIK:</label>
+    <input type="text" id="nip" name="nip" required />
+
+    <label for="jabatan">Jabatan:</label>
+    <select id="jabatan" name="jabatan" required>
+      <option value="">-- Pilih Jabatan --</option>
+      <option value="Dosen">Dosen</option>
+      <option value="Karyawan">Karyawan</option>
+    </select>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required />
+
+    <label for="estimasiBiaya">Estimasi Biaya Qurban (Rp):</label>
+    <input type="number" id="estimasiBiaya" name="estimasiBiaya" required min="0" />
+
+    <button class="submit-btn" type="submit">Daftar</button>
+  </form>
+
+  <h3>Daftar Peserta Qurban</h3>
+  <table id="tabelPeserta">
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>NIP / NIK</th>
+        <th>Jabatan</th>
+        <th>Email</th>
+        <th>Estimasi Biaya (Rp)</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</section>
+
+<section id="inputPotongan">
+  <h2>Input Potongan Gaji Bulanan</h2>
+  <form id="formPotongan" onsubmit="return inputPotonganGaji()">
+    <label for="nipPotongan">NIP / NIK Peserta:</label>
+    <input type="text" id="nipPotongan" name="nipPotongan" required />
+
+    <label for="bulanPotongan">Bulan:</label>
+    <select id="bulanPotongan" name="bulanPotongan" required>
+      <option value="">-- Pilih Bulan --</option>
+      <option value="Januari">Januari</option>
+      <option value="Februari">Februari</option>
+      <option value="Maret">Maret</option>
+      <option value="April">April</option>
+      <option value="Mei">Mei</option>
+      <option value="Juni">Juni</option>
+      <option value="Juli">Juli</option>
+      <option value="Agustus">Agustus</option>
+      <option value="September">September</option>
+      <option value="Oktober">Oktober</option>
+      <option value="November">November</option>
+      <option value="Desember">Desember</option>
+    </select>
+
+    <label for="jumlahPotongan">Jumlah Potongan (Rp):</label>
+    <input type="number" id="jumlahPotongan" name="jumlahPotongan" required min="0" />
+
+    <button class="submit-btn" type="submit">Input Potongan</button>
+  </form>
+
+  <h3>Data Potongan Gaji</h3>
+  <table id="tabelPotongan">
+    <thead>
+      <tr>
+        <th>NIP / NIK</th>
+        <th>Bulan</th>
+        <th>Jumlah Potongan (Rp)</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</section>
+
+<section id="laporan">
+  <h2>Laporan Peserta Qurban Lebaran Haji 1447 H</h2>
+  <table id="tabelLaporan">
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>NIP / NIK</th>
+        <th>Jabatan</th>
+        <th>Estimasi Biaya (Rp)</th>
+        <th>Total Potongan (Rp)</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+    <tfoot>
+      <tr>
+        <th colspan="4" style="text-align:right">Total Keseluruhan Potongan (Rp):</th>
+        <th id="totalKeseluruhan">0</th>
+      </tr>
+    </tfoot>
+  </table>
+</section>
+
+<script>
+  const pesertaQurban = [];
+  const potonganGaji = [];
+
+  function showSection(id) {
+    document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if (id === 'pendaftaran') renderTabelPeserta();
+    else if (id === 'inputPotongan') renderTabelPotongan();
+    else if (id === 'laporan') renderLaporan();
+  }
+
+  function daftarPeserta() {
+    const nama = document.getElementById('nama').value.trim();
+    const nip = document.getElementById('nip').value.trim();
+    const jabatan = document.getElementById('jabatan').value;
+    const email = document.getElementById('email').value.trim();
+    const estimasiBiaya = parseInt(document.getElementById('estimasiBiaya').value);
+
+    if (pesertaQurban.find(p => p.nip === nip)) {
+      alert('NIP / NIK sudah terdaftar!');
+      return false;
+    }
+
+    pesertaQurban.push({ nama, nip, jabatan, email, estimasiBiaya });
+    document.getElementById('formPendaftaran').reset();
+    renderTabelPeserta();
+    alert('Pendaftaran berhasil!');
+    return false;
+  }
+
+  function renderTabelPeserta() {
+    const tbody = document.querySelector('#tabelPeserta tbody');
+    tbody.innerHTML = '';
+    pesertaQurban.forEach(p => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${p.nama}</td>
+        <td>${p.nip}</td>
+        <td>${p.jabatan}</td>
+        <td>${p.email}</td>
+        <td>${p.estimasiBiaya.toLocaleString()}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function inputPotonganGaji() {
+    const nipPot = document.getElementById('nipPotongan').value.trim();
+    const bulan = document.getElementById('bulanPotongan').value;
+    const jumlah = parseInt(document.getElementById('jumlahPotongan').value);
+
+    if (!pesertaQurban.find(p => p.nip === nipPot)) {
+      alert('NIP / NIK peserta tidak ditemukan. Harap daftarkan peserta terlebih dahulu.');
+      return false;
+    }
+
+    const idx = potonganGaji.findIndex(pg => pg.nip === nipPot && pg.bulan === bulan);
+    if (idx !== -1) {
+      potonganGaji[idx].jumlah += jumlah;
+    } else {
+      potonganGaji.push({ nip: nipPot, bulan, jumlah });
+    }
+
+    document.getElementById('formPotongan').reset();
+    renderTabelPotongan();
+    alert('Potongan gaji berhasil diinput!');
+    return false;
+  }
+
+  function renderTabelPotongan() {
+    const tbody = document.querySelector('#tabelPotongan tbody');
+    tbody.innerHTML = '';
+    potonganGaji.forEach(pg => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${pg.nip}</td>
+        <td>${pg.bulan}</td>
+        <td>${pg.jumlah.toLocaleString()}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function renderLaporan() {
+    const tbody = document.querySelector('#tabelLaporan tbody');
+    tbody.innerHTML = '';
+    let totalKeseluruhan = 0;
+
+    pesertaQurban.forEach(p => {
+      const totalPot = potonganGaji.filter(pg => pg.nip === p.nip)
+                                   .reduce((sum, pg) => sum + pg.jumlah, 0);
+      totalKeseluruhan += totalPot;
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${p.nama}</td>
+        <td>${p.nip}</td>
+        <td>${p.jabatan}</td>
+        <td>${p.estimasiBiaya.toLocaleString()}</td>
+        <td>${totalPot.toLocaleString()}</td>`;
+      tbody.appendChild(tr);
+    });
+
+    document.getElementById('totalKeseluruhan').textContent = totalKeseluruhan.toLocaleString();
+  }
+</script>
+
+</body>
+</html>
